@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seima – Request Video</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      max-width: 580px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #111;
+      padding: 36px 36px 28px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 3rem;
+      letter-spacing: 0.55em;
+      color: #9B7B3C;
+      text-transform: uppercase;
+      padding-left: 0.55em;
+      margin-bottom: 4px;
+    }
+
+    .logo-defender {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.62rem;
+      letter-spacing: 0.38em;
+      color: #9B7B3C;
+      padding-left: 0.38em;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .header p { font-size: 0.82rem; color: #aaa; }
+
+    .form-body { padding: 32px 36px; }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #9B7B3C;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.93rem;
+      color: #333;
+      transition: border-color 0.15s;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: #9B7B3C;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 8px 0 24px;
+    }
+
+    .btn-generate {
+      width: 100%;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 13px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+
+    .btn-generate:hover { background: #9B7B3C; }
+
+    .btn-reset {
+      width: 100%;
+      background: #fff;
+      color: #888;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-reset:hover { border-color: #9B7B3C; color: #9B7B3C; }
+
+    .result {
+      display: none;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .result label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .link-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 10px;
+    }
+
+    .link-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      color: #555;
+      background: #f7f8fa;
+    }
+
+    .btn-copy {
+      background: #9B7B3C;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-copy:hover { background: #7a6030; }
+
+    .shortening-msg {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+
+    .copied-msg {
+      display: none;
+      font-size: 0.82rem;
+      color: #2e7d32;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .instructions {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #888;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="logo">Seima</div>
+    <div class="logo-defender">kitchen + laundry + bathroom ware</div>
+    <h1>Video Request Link Generator</h1>
+    <p>Staff use only — generate a link to request video from the homeowner</p>
+  </div>
+
+  <div class="form-body">
+
+    <p class="section-label">Customer Details</p>
+
+    <div class="field">
+      <label for="custName">Customer Name<span style="color:#c0392b"> *</span></label>
+      <input type="text" id="custName" placeholder="e.g. John Smith" />
+    </div>
+
+    <div class="field">
+      <label for="siteAddress">Site Address<span style="color:#c0392b"> *</span></label>
+      <input type="text" id="siteAddress" placeholder="e.g. 123 Main Street, Sydney NSW 2000" />
+    </div>
+
+    <div class="field">
+      <label for="caseRef">Case Reference Number<span style="color:#c0392b"> *</span></label>
+      <input type="text" id="caseRef" placeholder="e.g. CASE-2024-001" />
+    </div>
+
+    <hr class="divider" />
+
+    <p class="section-label">Video Request</p>
+
+    <div class="field">
+      <label for="mediaDesc">Description of video required<span style="color:#c0392b"> *</span></label>
+      <textarea id="mediaDesc" placeholder="e.g. Please record a short video showing the tap running and where the leak is occurring at the base."></textarea>
+    </div>
+
+    <button class="btn-generate" onclick="generateLink()">Generate Link</button>
+    <button class="btn-reset" onclick="resetForm()">Clear Form</button>
+
+    <div class="result" id="result">
+      <label>SMS Link</label>
+      <p class="shortening-msg" id="shorteningMsg">Shortening link…</p>
+      <div class="link-row">
+        <input type="text" id="shortLink" readonly placeholder="Generating…" />
+        <button class="btn-copy" onclick="copyLink()">Copy</button>
+      </div>
+      <div class="copied-msg" id="copiedMsg">✓ Copied — paste directly into your ClickSend SMS</div>
+      <p class="instructions">Paste this link into your ClickSend SMS. The homeowner's details and your video instructions will load automatically when they open it.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let fullLink = '';
+
+  async function generateLink() {
+    const name = document.getElementById('custName').value.trim();
+    const address = document.getElementById('siteAddress').value.trim();
+    const ref = document.getElementById('caseRef').value.trim();
+    const desc = document.getElementById('mediaDesc').value.trim();
+
+    if (!name || !address || !ref || !desc) {
+      alert('Please fill in all fields before generating a link.');
+      return;
+    }
+
+    const base = window.location.href.replace('index.html', '').replace(/\/$/, '');
+    const params = new URLSearchParams({ name, address, ref, desc });
+    fullLink = `${base}/upload.html?${params.toString()}`;
+
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('copiedMsg').style.display = 'none';
+    document.getElementById('shorteningMsg').style.display = 'block';
+    document.getElementById('shortLink').value = 'Shortening…';
+
+    try {
+      const res = await fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(fullLink)}`);
+      const data = await res.json();
+      document.getElementById('shortLink').value = data.shorturl;
+    } catch {
+      document.getElementById('shortLink').value = fullLink;
+    }
+
+    document.getElementById('shorteningMsg').style.display = 'none';
+  }
+
+  function resetForm() {
+    document.getElementById('custName').value = '';
+    document.getElementById('siteAddress').value = '';
+    document.getElementById('caseRef').value = '';
+    document.getElementById('mediaDesc').value = '';
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('copiedMsg').style.display = 'none';
+    document.getElementById('shortLink').value = '';
+  }
+
+  function copyLink() {
+    const val = document.getElementById('shortLink').value;
+    if (!val || val === 'Shortening…') return;
+    navigator.clipboard.writeText(val).then(() => {
+      document.getElementById('copiedMsg').style.display = 'block';
+    });
+  }
+</script>
+</body>
+</html>
